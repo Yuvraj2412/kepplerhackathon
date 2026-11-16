@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {
+    root: typeof __dirname !== "undefined" ? __dirname : process.cwd(),
     rules: {
       "*.css": {
         loaders: ["@tailwindcss/turbopack"],
