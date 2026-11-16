@@ -415,3 +415,45 @@ export async function putToSignedUrl(upload: SignedUpload, file: Blob): Promise<
     return networkFailure(error);
   }
 }
+
+// ── OC (admin) console ──────────────────────────────────────────────────────
+
+export interface AdminCredentials {
+  token: string;
+  actor: string;
+}
+
+/** Authenticated JSON request to an OC admin endpoint (`/api/admin/*`). */
+export async function adminRequest<T>(
+  creds: AdminCredentials,
+  method: "GET" | "POST" | "PATCH" | "PUT" | "DELETE",
+  path: string,
+  json?: unknown,
+): Promise<ApiResult<T>> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), PORTAL_TIMEOUT_MS);
+  try {
+    const headers: Record<string, string> = {
+      Accept: "application/json",
+      Authorization: `Bearer ${creds.token}`,
+    };
+    if (creds.actor.trim()) {
+      headers["X-Admin-Actor"] = creds.actor.trim();
+    }
+    if (json !== undefined) {
+      headers["Content-Type"] = "application/json";
+    }
+    const response = await fetch(path, {
+      method,
+      headers,
+      ...(json !== undefined ? { body: JSON.stringify(json) } : {}),
+      signal: controller.signal,
+      cache: "no-store",
+    });
+    return await toResult<T>(response);
+  } catch (error) {
+    return networkFailure(error);
+  } finally {
+    clearTimeout(timer);
+  }
+}

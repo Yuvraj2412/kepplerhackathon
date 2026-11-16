@@ -14,6 +14,7 @@ Official website, participant portal, judging system, and backend API for **Kosm
 
 - **Public Website (`app/`):** Home, `/about`, `/tracks`, `/timeline`, `/scoring`, `/rules`, `/submission`, `/fair-play`, `/prizes`, `/faq`, `/contact`, and `/register`.
 - **Participant Team Portal (`/portal`):** Per-member personal keys (`kmp_...`), Annex A Integrity Declarations, T0 problem statement release (per-team seeds, visible & hidden text watermarks, CSV canary records), Checkpoints 1–3, direct-to-storage signed uploads with magic-byte sniffing and SHA-256 manifests, Advanced prediction leaderboard, support tickets, and post-provisional appeals.
+- **OC Admin Console (`/admin`):** Browser dashboard for the Organizing Committee (authenticated via `ADMIN_API_TOKEN` + actor name or `ADMIN_TOKENS`) covering team verification & 60-second signed college ID inspection, message triage, problem file uploads & CSV leak tracing, judge creation & balanced assignment, Checkpoint 2, script scores & penalties, results computation/publishing, appeals, and hash-chained ledger verification.
 - **Judging & OC Admin APIs (`/api/judge/*`, `/api/admin/*`):** Blind Stage 1 judging, Grand Jury Stage 2, automated moderation triggers, script-computed ranking with tie-breakers, winner audit gate, hash-chained append-only ledger, leak tracing, and 180-day personal-data retention cron (`/api/cron/retention`).
 
 ## Project Structure
